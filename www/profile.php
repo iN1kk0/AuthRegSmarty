@@ -34,10 +34,10 @@ echo "Hello, " . $_SESSION['user_name'] . "<br/>";
 $smarty->display('profile.tpl');
 
 if (isset($_POST['submit'])) {
-    $login = $_POST['login'];
+    $login = trim($_POST['login']);
     $current = $_SESSION['user_name'];
-    if (empty($_POST['login'])) {
-        echo "Login empty";
+    if (empty($login)) {
+        echo "ERROR! Empty login";
     } else {
         $query = "UPDATE `users`
                   SET `login`='{$login}'

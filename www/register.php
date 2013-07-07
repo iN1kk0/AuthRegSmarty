@@ -33,9 +33,17 @@ $password = trim($_POST['password']);
 /* if (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.]+\.[a-z]{2,3}/i", $email)) {
   echo "Email so bad!";
   } */
+$q = mysql_query("SELECT COUNT(`id`) AS `c` FROM `users` WHERE `login`='$login' OR `email` = '$email' LIMIT 1");
+$q = mysql_fetch_assoc($q);
+if ($q['c'] != 0) {
+    echo 'User already exists';
+    $qq = false;
+} else{
+    $qq = true;
+}
 
 // Проверка данных
-if (isset($_POST['submit']) && strlen($login) > 0 && strlen($email) && strlen($password) > 0 && preg_match("/[0-9a-z_]+@[0-9a-z_^\.]+\.[a-z]{2,3}/i", $email)) {
+if (isset($_POST['submit']) && strlen($login) > 0 && isset($login) && $qq==true && strlen($email) && strlen($password) > 0 && preg_match("/[0-9a-z_]+@[0-9a-z_^\.]+\.[a-z]{2,3}/i", $email)) {
     // Добавление данных в БД
     $query = "INSERT INTO USERS(login,email,password) VALUES ('" . mysql_escape_string($login) . "', '" . mysql_escape_string($email) . "','" . md5($password) . "')";
     $result = mysql_query($query);
